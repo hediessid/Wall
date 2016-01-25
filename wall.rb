@@ -1,7 +1,5 @@
 require 'pry'
-
 class Wall
-  
   def initialize(width,height,bigBrick,smallBrick)
     @width = width
     @height = height
@@ -26,10 +24,23 @@ class Wall
     end
   end
 
-  def compare_all_rows(all_rows,count)
-    #need to change to hash in hash
+  def compare_superior_rows(all_rows, row_level, level, height, count=0)
+     # binding.pry
+    while (level < height)
+      if (level <height)
+       result = compare_all_rows(all_rows,result)[0]
+       compare_all_rows(all_rows,result)
+        level += 1
+      elsif (level == height)
+        count+= compare_all_rows(all_rows,row_level)[0].count
+      end    
+    end
+      puts count  
+  end
+
+  def compare_all_rows(all_rows,rows,count=0)
     hash_all_comparaison={}
-    all_rows.each do |row|
+    rows.each do |row|
       all_rows.each do |row_to_compare|
         if (row - row_to_compare)== row
           hash_all_comparaison[row]=row_to_compare
@@ -40,24 +51,22 @@ class Wall
     return hash_all_comparaison,count
   end 
 
-  def total_count(width, height, count=0)
-    all_rows = all_possibilities([3,4.5],[],[0]) 
+  def total_count(width, height)
+    level = 2
+    #binding.pry
+    rows= all_rows = all_possibilities([3,4.5],[],[0]) 
+    row_level = compare_all_rows(all_rows,rows)
+    puts all_rows.count if height==1
+    puts row_level[1] if height==2
+    if height > 2
 
-        if(height == 1)
-          return all_rows.count
-        elsif (height == 2)
-          puts compare_all_rows(all_rows,count)[0]
-        else 
-          # while (height>)
-          # height-=height
-        end
-                 
+      puts compare_superior_rows(all_rows,row_level,level,height)
+    end                        
   end
-
 end 
 
 wall = Wall.new(27,5,4.5,3)
-wall.total_count(27,2,0)
+wall.total_count(27,5)
 
 
 
