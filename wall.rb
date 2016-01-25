@@ -23,10 +23,10 @@ class Wall
       return possibilities
     end
   end
-
+  # need to use the first array that we create from comparaison 
   def compare_superior_rows(all_rows, row_level, level, height, count=0)
-     
-    all_rows.each do |row|
+     binding.pry
+    while (level <= height)
       if ((level == 2 )&&(height==2))
         return compare_all_rows(all_rows,row_level).count
       elsif (level == height)
@@ -51,8 +51,9 @@ class Wall
     end
     return array
   end 
+
   def total_count(width, height)
-    level = 2
+    level = 1
     #binding.pry
     rows= all_rows = all_possibilities([3,4.5],[],[0]) 
     puts all_rows.count if height==1
