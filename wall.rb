@@ -1,6 +1,6 @@
 require 'pry'
 class Wall
-    
+
   def initialize(width,height,bigBrick,smallBrick)
     @width = width
     @height = height
@@ -24,27 +24,26 @@ class Wall
       return possibilities
     end
   end
-  # need to use the first array that we create from comparaison 
-  def compare_superior_rows(all_row, row_level, level, height)
-    hash={}
-    binding.pry
+
+  def compare_superior_rows(all_row, row_level, level, height, hash={})
     while (level <= height)  
       if (level==height)
-        puts hash
-      else
-        hash.values.flatten(1).each do |array|
-          if ((hash.empty? == true) || (hash.has_key?(array)==false))
-             hash[level]=[row_level[array]]
-             binding.pry
-          else
-            binding.pry
-            hash[level].push([row_level[array]])           
-          end        
-        end 
 
-      end 
-    level+=1
-    end
+        row_level.values.flatten.count
+       level+=1
+      else       
+        row_level.values.flatten(1).each do |array|
+          if ((hash.empty? == true) || (hash.has_key?(array)==false))
+             hash[level]=[row_level[array]]  
+          else 
+            row_level = hash[level].push([row_level[array]]) 
+            level+=1
+            compare_superior_rows(all_row, row_level,level,height,row_level)          
+          end        
+        end
+        level+=1    
+      end
+    end 
   end
 
   def compare_all_rows(all_rows,rows)
